@@ -1,0 +1,12 @@
+specVersion: 0.35.0
+name: knative-text-responder
+runtime: go
+registry: quay.io/cali0707
+image: quay.io/cali0707/knative-text-responder:latest
+imageDigest: sha256:e6561d245a136381d0589f31d10285b9ec8ec2a6f1bf8d77ded27ce64d0fa909
+created: 2024-04-09T10:41:14.850534546-04:00
+invoke: cloudevent
+build:
+  builder: pack
+deploy:
+  namespace: default

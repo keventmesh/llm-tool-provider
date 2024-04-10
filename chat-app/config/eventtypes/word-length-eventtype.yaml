@@ -1,0 +1,12 @@
+apiVersion: eventing.knative.dev/v1beta2
+kind: EventType
+metadata:
+  name: word.length.request
+spec:
+  reference:
+    apiVersion: serving.knative.dev/v1
+    kind: Service
+    name: word-length
+  description: "This calculates the length of all the words provided to it in a list."
+  schemaData: '{"words":{"type":"list:string","description":"The list of words you would like to find out the lengths of."}}' 
+  type: "word.length.request"

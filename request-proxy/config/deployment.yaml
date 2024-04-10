@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: request-proxy
+  labels:
+    app: request-proxy
+spec:
+  selector:
+    matchLabels:
+      app: request-proxy
+  template:
+    metadata:
+      name: request-proxy
+      labels:
+        app: request-proxy
+    spec:
+      containers:
+        - name: request-proxy
+          image: ko://github.com/cali0707/auto-detect-tools
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: request-proxy-service
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+      name: http
+  selector:
+    app: request-proxy
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: sources.knative.dev/v1
+kind: SinkBinding
+metadata:
+  name: request-proxy-binding
+spec:
+  subject:
+    apiVersion: apps/v1
+    kind: Deployment
+    selector:
+      matchLabels:
+        app: request-proxy
+  sink:
+    ref:
+      apiVersion: eventing.knative.dev/v1
+      kind: Broker 
+      name: chat-broker 

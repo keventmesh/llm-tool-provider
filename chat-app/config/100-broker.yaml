@@ -1,0 +1,49 @@
+apiVersion: eventing.knative.dev/v1
+kind: Broker
+metadata:
+  name: chat-broker
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: trigger-proxy
+spec:
+  broker: chat-broker
+  filters:
+    - suffix:
+        type: response
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: request-proxy-service
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: trigger-knative-text
+spec:
+  broker: chat-broker
+  filter:
+    attributes:
+      type: dev.knative.info.request
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: knative-text-responder
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: word-length
+spec:
+  broker: chat-broker
+  filter:
+    attributes:
+      type: word.length.request
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: word-length

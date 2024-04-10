@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-app
+  namespace: default
+  labels:
+    app: chat-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-app
+  template:
+    metadata:
+      labels:
+        app: chat-app
+    spec:
+      serviceAccountName: chat-app-sa
+      containers:
+        - env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: OPENAI_API_KEY
+                  name: chat-app-credentials
+            - name: TAVILY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: TAVILY_API_KEY
+                  name: chat-app-credentials
+            - name: IN_KUBERNETES
+              value: "true" 
+          image: quay.io/cali0707/chat-app 
+          imagePullPolicy: Always
+          name: chat-app
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-app-service
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    app: chat-app
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: sources.knative.dev/v1
+kind: SinkBinding
+metadata:
+  name: chat-app-binding
+spec:
+  subject:
+    apiVersion: apps/v1
+    kind: Deployment
+    selector:
+      matchLabels:
+        app: chat-app
+  sink:
+    ref:
+      apiVersion: v1
+      kind: Service 
+      name: request-proxy-service
