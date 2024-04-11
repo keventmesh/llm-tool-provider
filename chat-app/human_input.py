@@ -15,7 +15,7 @@ class HumanInput(BaseTool):
 
     name: str = "human"
     description: str = (
-        "You can ask a human user for guidance or information whenn you think you "
+        "You can ask a human user for guidance or information when you think you "
         "are stuck or you are not sure what to do next. "
         "The input should be a question for the human user."
     )
