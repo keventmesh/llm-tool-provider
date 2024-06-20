@@ -10,8 +10,7 @@ metadata:
 spec:
   broker: chat-broker
   filters:
-    - suffix:
-        type: response
+    - cesql: EXISTS responseid
   subscriber:
     ref:
       apiVersion: v1
