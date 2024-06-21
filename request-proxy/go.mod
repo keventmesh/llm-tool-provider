@@ -2,7 +2,7 @@ module github.com/cali0707/knative-llm-tool-provider
 
 go 1.21.3
 
-require github.com/cloudevents/sdk-go/v2 v2.12.0
+require github.com/cloudevents/sdk-go/v2 v2.15.2
 
 require (
 	github.com/google/uuid v1.1.1 // indirect
