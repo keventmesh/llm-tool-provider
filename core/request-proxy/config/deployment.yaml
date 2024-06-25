@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: request-proxy
-          image: ko://github.com/cali0707/auto-detect-tools
+          image: ko://github.com/cali0707/knative-llm-tool-provider
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

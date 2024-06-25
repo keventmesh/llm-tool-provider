@@ -7,7 +7,6 @@ from langchain_openai import ChatOpenAI
 from langchain.tools.render import format_tool_to_openai_function
 from langchain_core.messages import  BaseMessage, HumanMessage 
 from langchain_core.messages import FunctionMessage
-from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain.globals import set_debug
 
 from langgraph.prebuilt import ToolExecutor, ToolInvocation 
@@ -30,7 +29,7 @@ class AgentState(TypedDict):
 async def on_chat_start():
     model = ChatOpenAI(temperature=0.1, streaming=True, max_retries=5, timeout=60.)
     
-    tools = [HumanInput(), TavilySearchResults(max_results=1)]
+    tools = [HumanInput()]
     tools.extend(create_cloudevents_tools())
 
     tool_executor = ToolExecutor(tools)
