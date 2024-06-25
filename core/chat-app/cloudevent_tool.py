@@ -65,7 +65,7 @@ def make_arun(construct_request):
 
     return arun
 
-types = {"string": str, "int": int, "list:string": List[str], "list:int": List[int]}
+types = {"string": str, "int": int, "float": float, "list:string": List[str], "list:int": List[int], "list:float": List[float]}
 
 def make_input_class(eventtype, request_structure: Dict[str, Dict[str, Any]]):
     d = {}
@@ -114,7 +114,12 @@ def process_eventtype_to_request_structure(eventtype):
 
 def create_cloudevents_tools() -> List:
     result = []
-    if env["IN_KUBERNETES"] is not None:
+    try:
+        in_k8s = env["IN_KUBERNETES"] is not None
+    except KeyError:
+        in_k8s = False
+
+    if in_k8s:
         print("getting eventtypes")
         for et in get_eventtypes():
             request_structure = process_eventtype_to_request_structure(et)

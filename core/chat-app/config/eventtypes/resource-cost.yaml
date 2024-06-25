@@ -1,0 +1,12 @@
+apiVersion: eventing.knative.dev/v1beta2
+kind: EventType
+metadata:
+  name: resource.cost.calculator
+spec:
+  reference:
+    apiVersion: serving.knative.dev/v1
+    kind: Service
+    name: resource-cost-calculator
+  description: "This calculates the cost for a given resource kind and average usage over a month."
+  schemaData: '{"resourceKind":{"type":"string","description":"The type of resource you would like to calculate the cost of"},"usage":{"type":"float","description":"The average usage of the resource"},"unit":{"The unit of the resource usage"}}' 
+  type: "resource-cost-calculator"
