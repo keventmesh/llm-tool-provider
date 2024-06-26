@@ -23,11 +23,6 @@ spec:
                 secretKeyRef:
                   key: OPENAI_API_KEY
                   name: chat-app-credentials
-            - name: TAVILY_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  key: TAVILY_API_KEY
-                  name: chat-app-credentials
             - name: IN_KUBERNETES
               value: "true" 
           image: quay.io/cali0707/chat-app 
