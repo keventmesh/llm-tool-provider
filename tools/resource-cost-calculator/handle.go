@@ -3,6 +3,7 @@ package function
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/cloudevents/sdk-go/v2/event"
 	"github.com/google/uuid"
@@ -10,7 +11,7 @@ import (
 
 var usageCosts map[string]map[string]float64 = map[string]map[string]float64{
 	"cpu":    {"cores": 12.5},
-	"memory": {"MiB": 0.01, "GiB": 10.24},
+	"memory": {"mib": 0.01, "gib": 10.24},
 }
 
 type ResourceCostRequest struct {
@@ -20,12 +21,12 @@ type ResourceCostRequest struct {
 }
 
 func (r *ResourceCostRequest) Cost() (float64, error) {
-	resourceCosts, ok := usageCosts[r.ResourceKind]
+	resourceCosts, ok := usageCosts[strings.ToLower(r.ResourceKind)]
 	if !ok {
 		return 0, fmt.Errorf("invalid resource kind")
 	}
 
-	resourceCost, ok := resourceCosts[r.Unit]
+	resourceCost, ok := resourceCosts[strings.ToLower(r.Unit)]
 	if !ok {
 		return 0, fmt.Errorf("invalid resource unit")
 	}
