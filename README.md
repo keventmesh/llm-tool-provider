@@ -20,7 +20,7 @@ The prototype is (hopefully) easy to set up and use - you should be able to get 
 
 You will now have a cluster with everything installed and working! If anything did not work in this process, please open a GitHub issue. 
 
-The easiest way to access the LLM app running in your cluster is to port forward the service: `kubectl port-forward svc/chat-app-serive 8080:8080`.
+The easiest way to access the LLM app running in your cluster is to port forward the service: `kubectl port-forward svc/chat-app-service 8080:8080`.
 After running this command in your terminal, you will be able to access the app at `localhost:8080`.
 
 However, when you ask the LLM questions you will likely notice that it is not yet calling any tools to answer your questions! This is because we have not
