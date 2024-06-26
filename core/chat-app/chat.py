@@ -4,6 +4,7 @@ import json
 from dotenv import load_dotenv
 
 from langchain_openai import ChatOpenAI
+from langchain.memory import ConversationBufferMemory
 from langchain.tools.render import format_tool_to_openai_function
 from langchain_core.messages import  BaseMessage, HumanMessage 
 from langchain_core.messages import FunctionMessage
@@ -11,6 +12,7 @@ from langchain.globals import set_debug
 
 from langgraph.prebuilt import ToolExecutor, ToolInvocation 
 from langgraph.graph import StateGraph, END
+from langgraph.checkpoint.memory import MemorySaver
 
 import chainlit as cl
 
@@ -24,9 +26,13 @@ set_debug(True)
 
 class AgentState(TypedDict):
     messages: Annotated[Sequence[BaseMessage], operator.add]
+    chat_history: list[BaseMessage]
 
 @cl.on_chat_start
 async def on_chat_start():
+    chat_history = ConversationBufferMemory(return_messages=True)
+    cl.user_session.set("chat_history", chat_history)
+
     model = ChatOpenAI(temperature=0.1, streaming=True, max_retries=5, timeout=60.)
     
     tools = [HumanInput()]
@@ -49,7 +55,7 @@ async def on_chat_start():
     async def call_model(state: AgentState):
         print("calling model...")
         messages = state["messages"]        
-        print(messages)
+        print(state)
         response = await model.ainvoke(messages)
         return {"messages": [response]}
 
@@ -101,7 +107,9 @@ async def on_chat_start():
 
     graph.add_edge("action", "agent")
 
-    runner = graph.compile()
+    memory = MemorySaver()
+
+    runner = graph.compile(checkpointer=memory)
 
     cl.user_session.set("runner", runner)
 
@@ -125,7 +133,7 @@ async def main(message: cl.Message):
 
     msg = cl.Message(content="")
 
-    async for event in runner.astream_events(inputs, version="v1"):
+    async for event in runner.astream_events(inputs, {"configurable": {"thread_id": "thread-1"}}, version="v1"):
         kind = event["event"]
         if kind == "on_chat_model_stream":
             content = event["data"]["chunk"].content
