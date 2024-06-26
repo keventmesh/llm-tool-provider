@@ -15,10 +15,14 @@ from kubernetes import client as k8s_client
 from kubernetes.dynamic.exceptions import ResourceNotFoundError
 from kubernetes.client import api_client
 
-if env["IN_KUBERNETES"] is not None:
-    client = dynamic.DynamicClient(
-        api_client.ApiClient(configuration=config.load_incluster_config())
-    )
+try:
+    if env["IN_KUBERNETES"] is not None:
+        client = dynamic.DynamicClient(
+            api_client.ApiClient(configuration=config.load_incluster_config())
+        )
+except KeyError:
+    print("not in k8s, not loading client config")
+    
 
 def make_request_maker(eventtype, request_structure):
     attributes = {
