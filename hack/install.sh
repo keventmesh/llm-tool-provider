@@ -23,6 +23,8 @@ if [[ $FULL_INSTALL ]]; then
 	wait_for_deployments "knative-eventing"
 fi
 
+(cd tools/resource-cost-calculator && func deploy)
+(cd tools/average-resource-consumption && func deploy)
 (cd tools/knative-text-responder && func deploy)
 (cd tools/word-length && func deploy)
 
