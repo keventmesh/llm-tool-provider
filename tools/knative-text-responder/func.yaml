@@ -2,7 +2,6 @@ specVersion: 0.36.0
 name: knative-text-responder
 runtime: go
 registry: quay.io/cali0707
-image: quay.io/cali0707/knative-text-responder:latest
 namespace: default
 created: 2024-04-09T10:41:14.850534546-04:00
 invoke: cloudevent

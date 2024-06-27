@@ -2,7 +2,6 @@ specVersion: 0.36.0
 name: word-length
 runtime: go
 registry: quay.io/cali0707/word-length
-image: quay.io/cali0707/word-length/word-length:latest
 namespace: default
 created: 2024-04-10T13:58:47.000036865-04:00
 invoke: cloudevent
