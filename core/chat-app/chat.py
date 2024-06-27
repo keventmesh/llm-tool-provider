@@ -8,6 +8,7 @@ from langchain.memory import ConversationBufferMemory
 from langchain.tools.render import format_tool_to_openai_function
 from langchain_core.messages import  BaseMessage, HumanMessage 
 from langchain_core.messages import FunctionMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.globals import set_debug
 
 from langgraph.prebuilt import ToolExecutor, ToolInvocation 
@@ -41,22 +42,38 @@ async def on_chat_start():
     tool_executor = ToolExecutor(tools)
 
     functions = [format_tool_to_openai_function(t) for t in tools]
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                    "system",
+                    "You are a helpful AI assistant. "
+                    "Use the provided tools to progress towards answering the question. "
+                    "If you do not have the final answer yet, prefix your response with CONTINUE. "
+                    "You have access to the following tools: {tool_names}.",
+            ),
+            MessagesPlaceholder(variable_name="messages"),
+        ]
+    )
+    prompt = prompt.partial(tool_names=", ".join([tool.name for tool in tools]))
+                    
     
-    model = model.bind_functions(functions)
+    model = prompt | model.bind_functions(functions)
 
     def should_continue(state: AgentState) -> str:
         messages = state["messages"]
         last_message = messages[-1]
-        if "function_call" not in last_message.additional_kwargs:
+        if "function_call" in last_message.additional_kwargs:
+            return "tool_call"
+        elif "CONTINUE" not in last_message.content:
             return "end"
         else:
-            return "continue"
+            return "model_call"
 
     async def call_model(state: AgentState):
         print("calling model...")
-        messages = state["messages"]        
         print(state)
-        response = await model.ainvoke(messages)
+        response = await model.ainvoke(state)
         return {"messages": [response]}
 
     async def call_tool(state: AgentState):
@@ -91,21 +108,22 @@ async def on_chat_start():
 
     graph = StateGraph(AgentState)
 
-    graph.add_node("agent", call_model)
+    graph.add_node("model", call_model)
     graph.add_node("action", call_tool)
 
-    graph.set_entry_point("agent")
+    graph.set_entry_point("model")
 
     graph.add_conditional_edges(
-        "agent",
+        "model",
         should_continue,
         {
-            "continue": "action",
+            "tool_call": "action",
+            "model_call": "model",
             "end": END,
         },
     )
 
-    graph.add_edge("action", "agent")
+    graph.add_edge("action", "model")
 
     memory = MemorySaver()
 
