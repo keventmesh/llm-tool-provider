@@ -25,8 +25,6 @@ fi
 
 (cd tools/resource-cost-calculator && func deploy)
 (cd tools/average-resource-consumption && func deploy)
-(cd tools/knative-text-responder && func deploy)
-(cd tools/word-length && func deploy)
 
 (cd core/request-proxy && ko apply -f ./config)
 kubectl apply -f ./core/chat-app/config
