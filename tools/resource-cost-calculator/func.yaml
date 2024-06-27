@@ -1,0 +1,16 @@
+specVersion: 0.36.0
+name: resource-cost-calculator
+runtime: go
+registry: quay.io/cali0707
+namespace: default
+created: 2024-06-25T14:54:34.256280245-04:00
+invoke: cloudevent
+build:
+  builder: pack
+deploy:
+  namespace: default
+  image: quay.io/cali0707/resource-cost-calculator@sha256:d0c71347d3df508320ddb96355ce61e58645797febd8f9f9324f9638ffbd3205
+  subscriptions:
+  - source: chat-broker
+    filters:
+      type: resource.cost.calculator

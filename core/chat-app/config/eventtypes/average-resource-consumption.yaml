@@ -1,0 +1,11 @@
+apiVersion: eventing.knative.dev/v1beta2
+kind: EventType
+metadata:
+  name: average.resource.consumption
+spec:
+  reference:
+    apiVersion: serving.knative.dev/v1
+    kind: Service
+    name: average-resource-consumption
+  description: "This tells you the average resource consumption for recent months"
+  type: "average.resource.consumption"
