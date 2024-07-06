@@ -7,7 +7,7 @@ asyncer==0.0.2
 attrs==23.2.0
 bidict==0.23.1
 cachetools==5.3.3
-certifi==2024.2.2
+certifi==2024.7.4
 chainlit==1.0.501
 charset-normalizer==3.3.2
 chevron==0.14.0
