@@ -16,7 +16,8 @@ The prototype is (hopefully) easy to set up and use - you should be able to get 
    1. Edit `core/chat-app/config/100-chat-app-credentials.secret.yaml` to include your api key
 1. Ensure that Knative Functions is installed on your machine. For installation instructions, see [here](https://knative.dev/docs/functions/install-func/)
 1. With your credentials set up so that `kubectl` has access to a running cluster, run `./hack/install.sh`. If you do not already have Knative Serving and Eventing
-   installed in your cluster, you can instead run `FULL_INSTALL=true ./hack/install.sh`
+   installed in your cluster, you can instead run `FULL_INSTALL=true ./hack/install.sh`. To configure which namespace the chat app resources are installed into,
+   set the `CHAT_NAMESPACE` environment variable. If you are installing in openshift, please set `OPENSHIFT=true`.
 
 You will now have a cluster with everything installed and working! If anything did not work in this process, please open a GitHub issue. 
 
