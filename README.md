@@ -8,6 +8,8 @@ tools (both internal and external to your cluster).
 
 ## Trying it out
 
+### Setup
+
 The prototype is (hopefully) easy to set up and use - you should be able to get it running by following the steps below:
 
 1. Get an OpenAI api key. For instructions on this, follow the steps [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key)
@@ -23,6 +25,8 @@ You will now have a cluster with everything installed and working! If anything d
 
 The easiest way to access the LLM app running in your cluster is to port forward the service: `kubectl port-forward svc/chat-app-service 8080:8080`.
 After running this command in your terminal, you will be able to access the app at `localhost:8080`.
+
+### Adding tools to the Chat App
 
 However, when you ask the LLM questions you will likely notice that it is not yet calling any tools to answer your questions! This is because we have not
 yet created any [EventTypes](https://knative.dev/docs/eventing/event-registry/#about-eventtype-objects). To give the LLM access to the tools we have deployed
