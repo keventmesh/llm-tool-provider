@@ -23,10 +23,10 @@ type AverageResourceConsumption struct {
 func Handle(ctx context.Context, e event.Event) (*event.Event, error) {
 	fmt.Printf("Received a new event\n%s", e.String())
 	mockData := []AverageResourceConsumption{
-		{CPU: ResourceConsumptionMetric{Value: 2, Unit: "Cores"}, Memory: ResourceConsumptionMetric{Value: 8200, Unit: "MiB"}, Month: "March"},
-		{CPU: ResourceConsumptionMetric{Value: 2.5, Unit: "Cores"}, Memory: ResourceConsumptionMetric{Value: 8117, Unit: "MiB"}, Month: "April"},
-		{CPU: ResourceConsumptionMetric{Value: 3.5, Unit: "Cores"}, Memory: ResourceConsumptionMetric{Value: 9217, Unit: "MiB"}, Month: "May"},
-		{CPU: ResourceConsumptionMetric{Value: 4.5, Unit: "Cores"}, Memory: ResourceConsumptionMetric{Value: 10117, Unit: "MiB"}, Month: "June"},
+		{CPU: ResourceConsumptionMetric{Value: 21.33, Unit: "Cores"}, Memory: ResourceConsumptionMetric{Value: 8200, Unit: "MiB"}, Month: "March"},
+		{CPU: ResourceConsumptionMetric{Value: 27.56, Unit: "Cores"}, Memory: ResourceConsumptionMetric{Value: 8117, Unit: "MiB"}, Month: "April"},
+		{CPU: ResourceConsumptionMetric{Value: 33.17, Unit: "Cores"}, Memory: ResourceConsumptionMetric{Value: 9217, Unit: "MiB"}, Month: "May"},
+		{CPU: ResourceConsumptionMetric{Value: 34.51, Unit: "Cores"}, Memory: ResourceConsumptionMetric{Value: 10117, Unit: "MiB"}, Month: "June"},
 	}
 
 	response := event.New()
