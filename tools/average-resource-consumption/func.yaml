@@ -9,7 +9,7 @@ build:
   builder: pack
 deploy:
   namespace: default
-  image: quay.io/cali0707/average-resource-consumption@sha256:c18f42d15ec1436982b9e7c5faf5c99716ab1360645296ac86d1e7c45703f3d2
+  image: quay.io/cali0707/average-resource-consumption@sha256:310b968a27e8ff3c750ca69da3b021ab1322629e169ffa1c93be382e99fa6633
   subscriptions:
   - source: chat-broker
     filters:

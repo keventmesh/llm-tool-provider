@@ -10,8 +10,8 @@ import (
 )
 
 var usageCosts map[string]map[string]float64 = map[string]map[string]float64{
-	"cpu":    {"cores": 12.5},
-	"memory": {"mib": 0.01, "gib": 10.24},
+	"cpu":    {"cores": 12.99},
+	"memory": {"mib": 0.016, "gib": 16.384},
 }
 
 type ResourceCostRequest struct {
